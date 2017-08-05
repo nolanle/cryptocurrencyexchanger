@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\SocialUser;
+use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -29,11 +33,56 @@ class LoginController extends Controller
 
     /**
      * Create a new controller instance.
-     *
-     * @return void
      */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }
+
+
+    public function socialLogin($provider)
+    {
+        // return Socialite::driver($provider)->scopes(['email', 'public_profile', 'user_friends'])->redirect();
+        return Socialite::driver($provider)->redirect();
+    }
+
+
+    public function loginCallback($provider)
+    {
+        // user data from social network
+        $callbackUser = Socialite::driver($provider)->user();
+        // find associated info
+        $socialUser = SocialUser::whereSocialId($callbackUser->getId())
+            ->whereSocial($provider)
+            ->first();
+        if (empty($socialUser)){
+            // find exists user
+            $user = User::whereEmail($callbackUser->getEmail())->first();
+            if (empty($user)){
+                // create new user if not exists
+                $user = User::create([
+                    'name' => $callbackUser->getName(),
+                    'nickname' => $callbackUser->getNickname(),
+                    'email' => $callbackUser->getEmail(),
+                    'avatar' => $callbackUser->getAvatar(),
+                    // 'gender' => $callbackUser->getGender()
+                ]);
+            }
+            $socialUser = SocialUser::create([
+                'user_id' => $user->id,
+                'social_id' => $callbackUser->getId(),
+                'social' => $provider
+            ]);
+        }
+        // else{
+        //     $user = User::findOrFail($socialUser->user_id);
+        // }
+        // Login and "remember" the given user...
+        // Auth::login($user, true);
+        Auth::loginUsingId($socialUser->user_id, true);
+        return redirect('home');
+    }
+
+
+
 }

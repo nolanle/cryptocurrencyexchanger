@@ -46,6 +46,16 @@
                                     </label>
                                 </div>
                             </div>
+
+                            <div class="col-md-6 col-md-offset-4">
+                                <a href="{{ url('login/facebook') }}">Facebook</a>
+                            </div>
+                            <div class="col-md-6 col-md-offset-4">
+                                <a href="{{ url('login/google') }}">Google</a>
+                            </div>
+                            <div class="col-md-6 col-md-offset-4">
+                                <a href="{{ url('login/twitter') }}">Twitter</a>
+                            </div>
                         </div>
 
                         <div class="form-group">
