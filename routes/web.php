@@ -30,3 +30,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 */
 Route::get('/login/{provider}', 'Auth\LoginController@socialLogin');
 Route::get('/login/callback/{provider}', 'Auth\LoginController@loginCallback');
+
+
+/*
+|--------------------------------------------------------------------------
+| Load Email by ID
+|--------------------------------------------------------------------------
+|
+| Here is the where for user view email by Email Id
+|
+*/
+Route::get('email/{id}', 'EmailController@loadEmail');

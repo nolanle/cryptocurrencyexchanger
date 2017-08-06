@@ -52,7 +52,7 @@ class LoginController extends Controller
         // user data from social network
         $callbackUser = Socialite::driver($provider)->user();
         if ($callbackUser->getEmail() == null){
-            return redirect('login')->with('warning', "Your $provider Do Not Have Email Address");
+            return redirect('login')->with('warning', "Your $provider do not have email address!");
         }
 
         // find associated info
