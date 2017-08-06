@@ -7,6 +7,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
+                    @if (session('warning'))
+                        <div class="alert alert-warning">
+                            {{ session('warning') }}
+                        </div>
+                    @endif
+
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
 
@@ -45,6 +51,16 @@
                                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                                     </label>
                                 </div>
+                            </div>
+
+                            <div class="col-md-6 col-md-offset-4">
+                                <a href="{{ url('login/facebook') }}">Facebook</a>
+                            </div>
+                            <div class="col-md-6 col-md-offset-4">
+                                <a href="{{ url('login/google') }}">Google</a>
+                            </div>
+                            <div class="col-md-6 col-md-offset-4">
+                                <a href="{{ url('login/twitter') }}">Twitter</a>
                             </div>
                         </div>
 

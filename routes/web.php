@@ -18,3 +18,15 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+/*
+|--------------------------------------------------------------------------
+| Social Login
+|--------------------------------------------------------------------------
+|
+| Here is the where for internal network login like Facebook, Google
+|
+*/
+Route::get('/login/{provider}', 'Auth\LoginController@socialLogin');
+Route::get('/login/callback/{provider}', 'Auth\LoginController@loginCallback');
