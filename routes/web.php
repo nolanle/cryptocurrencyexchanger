@@ -34,6 +34,17 @@ Route::get('/login/callback/{provider}', 'Auth\LoginController@loginCallback');
 
 /*
 |--------------------------------------------------------------------------
+| member controller
+|--------------------------------------------------------------------------
+|
+*/
+Route::get('/member', 'UserController@index');
+Route::post('profile-update', 'UserController@updateProfile');
+Route::post('upload/avatar', 'UserController@uploadAvatar');
+Route::post('password-update', 'UserController@updatePassword');
+
+/*
+|--------------------------------------------------------------------------
 | Load Email by ID
 |--------------------------------------------------------------------------
 |

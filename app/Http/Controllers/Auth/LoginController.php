@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Currency;
+use App\EmailService;
+use App\HelperService;
 use App\Http\Controllers\Controller;
 use App\SocialUser;
 use App\User;
+use App\Wallet;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -64,13 +68,21 @@ class LoginController extends Controller
             $user = User::whereEmail($callbackUser->getEmail())->first();
             if (empty($user)){
                 // create new user if not exists
+                $password = str_random(8);
                 $user = User::create([
                     'name' => $callbackUser->getName(),
                     'nickname' => $callbackUser->getNickname(),
                     'email' => $callbackUser->getEmail(),
                     'avatar' => $callbackUser->getAvatar(),
+                    'password' => bcrypt($password)
                     // 'gender' => $callbackUser->getGender()
                 ]);
+
+                HelperService::createWallet($user);
+
+                // send to user
+                //$emailService = new EmailService;
+                //$emailService->registeredEmail($user, $password, null);
             }
             $socialUser = SocialUser::create([
                 'user_id' => $user->id,
@@ -79,7 +91,7 @@ class LoginController extends Controller
             ]);
         }
         Auth::loginUsingId($socialUser->user_id, true);
-        return redirect('home');
+        return redirect($this->redirectTo);
     }
 
 

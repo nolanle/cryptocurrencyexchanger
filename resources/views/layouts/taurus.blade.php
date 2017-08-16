@@ -15,14 +15,21 @@
     <script type='text/javascript' src='{{ asset('js/plugins/bootstrap/bootstrap.min.js') }}'></script>
 
     <script type='text/javascript' src='{{  asset('js/plugins/uniform/jquery.uniform.min.js') }}'></script>
+    <!-- Scripts -->
+    @yield('scripts')
 
     <script type='text/javascript' src='{{ asset('js/plugins.js') }}'></script>
     <script type='text/javascript' src='{{ asset('js/actions.js') }}'></script>
-    <script type='text/javascript' src='{{ asset('js/settings.js') }}'></script>
+
+
 </head>
 <body class="bg-img-num1">
 <div class="container">
+
+    @yield('nav')
+
     @yield('content')
+
 </div>
 
 </body>

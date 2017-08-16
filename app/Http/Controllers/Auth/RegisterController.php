@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Currency;
 use App\EmailService;
+use App\HelperService;
 use App\User;
 use App\Http\Controllers\Controller;
+use App\Wallet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -73,6 +76,11 @@ class RegisterController extends Controller
     }
 
     //Handles registration request for seller
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function register(Request $request)
     {
         //dd( $request->all() );
@@ -82,6 +90,8 @@ class RegisterController extends Controller
         //Create seller
         $password = str_random(5);
         $user = $this->create($request->all(), $password, $request->ip());
+
+        HelperService::createWallet($user);
 
         //Authenticates seller
         $this->guard()->login($user);

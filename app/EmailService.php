@@ -14,4 +14,5 @@ class EmailService
             $m->to($user->email, $user->name)->subject('Registered New Account ' . config('app.name') );
         });
     }
+
 }
